@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <form id="bid-form">
+        <label>Auction Field:</label><br>
+        <input type="text" name="auction-field", id="auction-field"><br>
+        <label>Bid Field:</label><br>
+        <input type="text" name="bid-field" id="bid-field"><br>
+        <input type="submit" value="submit">
+    </form>
+</body>
+
+<script>
+    const socketIO = io()
+
+    /*socketIO.emit('join-auction', {
+        auctionID: 7
+    })*/
+
+    socketIO.on('join-auction-error', data => console.log(data), ack => {
+        console.log(response)
+    })
+
+    socketIO.on('join-auction-success', data => console.log(data), ack => {
+        console.log(response)
+    })
+
+    document.getElementById('bid-form').addEventListener('submit', e => {
+        e.preventDefault()
+
+        const biddingValue = document.getElementById('bid-form')['bid-field'].value
+        const auctionID = document.getElementById('bid-form')['auction-field'].value
+
+        socketIO.emit('join-auction', {
+        auctionID: auctionID
+        })
+
+        socketIO.emit('bid', {
+        value: biddingValue,
+        auctionID: auctionID,
+        bidderID: '61a9e5499fcb7bfeae137b84'
+    })
+
+    })
+    
+    socketIO.on('bid-error', data => console.log(data))
+
+    socketIO.on('bid-success', data => console.log(data))
+
+    socketIO.on('error', data => console.log(data))
+
+
+
+</script>
+</html>
