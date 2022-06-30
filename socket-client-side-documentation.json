@@ -1,0 +1,78 @@
+{
+    "socket.IOversion": "4.4.1",
+    "server": "159.223.99.196:3004",
+    "events": {
+        "on": [
+            {
+                "eventName": "check-connection",
+                "description": "this event is fired after a connection is established to check connectivity"
+            },
+            {
+                "eventName": "join-auction-error",
+                "description": "this event is fired when any error occurs in event('join-auction')",
+                "payload": {
+                    "accepted": "boolean",
+                    "message": "string",
+                    "service": "string"
+                }
+            },
+            {
+                "eventName": "join-auction-success",
+                "description": "this event is fired when event('join-auction') finishes its instructions",
+                "payload": {
+                    "accepted": "boolean",
+                    "message": "string",
+                    "service": "string"
+                }
+            },
+            {
+                "eventName": "bid-error",
+                "description": "this event is fired when any error occurs in event('bid')",
+                "payload": {
+                    "accepted": "boolean",
+                    "message": "string",
+                    "service": "string"
+                }
+            },
+            {
+                "eventName": "bid-success",
+                "description": "this event is fired when event('bid-success') finishes its instructions",
+                "payload": {
+                    "accepted": "boolean",
+                    "message": "string",
+                    "value": "double",
+                    "bid": {
+                        "auctionID": "objectID",
+                        "bidder": {
+                            "ID": "objectID",
+                            "email": "string",
+                            "phoneNumber": "string",
+                            "firstName": "string",
+                            "lastName": "string"
+                        }
+                    }
+                }
+            }
+        ],
+
+        "emit": [
+            {
+                "eventName": "join-auction",
+                "description": "this event is used to allow bidders to enter the bidding room for specific item",
+                "payload": {
+                    "auctionID": "objectID"
+                }
+            },
+            {
+                "eventName": "bid",
+                "description": "this event is used to allow bidders to bid with the amount they want",
+                "payload": {
+                    "auctionID": "objectID",
+                    "bidderID": "objectID",
+                    "value": "double"
+                }
+            }
+        ]
+    }
+
+}

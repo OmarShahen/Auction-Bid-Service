@@ -10,6 +10,11 @@ module.exports = io => {
 
         try {
 
+            socket.emit('connection-check',{
+                accepted: true,
+                message: 'connected to bid-server successfully'
+            })
+
             socket.on('join-auction', async data => {
 
                 try {
@@ -219,7 +224,7 @@ module.exports = io => {
                 return socket.to(`${data.auctionID}`).emit('bid-success', {
                     accepted: true,
                     message: `${data.bidderID} made a bid with ${data.value}`,
-                    bid: newBidData,
+                    bid: saveBid,
                 })
 
                 } catch(error) {

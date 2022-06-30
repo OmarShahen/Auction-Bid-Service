@@ -1,14 +1,16 @@
 const express = require('express')
 const morgan = require('morgan')
 const config = require('./config/config')
-const io = require('socket.io')
 const http = require('http')
 const bidEvents = require('./socket-controllers/bids')
 const path = require('path')
+const io = require('socket.io')
 
 const app = express()
 const httpServer = http.Server(app)
-const webSocketServer = io(httpServer)
+const webSocketServer = io(httpServer, {
+    cors: { origin: "*" }
+})
 
 // middlewares
 
