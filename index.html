@@ -43,19 +43,19 @@
         console.log(response)
     })
 
+    socketIO.emit('join-auction', {
+        auctionID: '62bca256b06736500abe1cc8'
+        })
+
     document.getElementById('bid-form').addEventListener('submit', e => {
         e.preventDefault()
 
         const biddingValue = document.getElementById('bid-form')['bid-field'].value
         const auctionID = document.getElementById('bid-form')['auction-field'].value
 
-        socketIO.emit('join-auction', {
-        auctionID: auctionID
-        })
-
         socketIO.emit('bid', {
-        value: biddingValue,
-        auctionID: auctionID,
+        value: parseInt(biddingValue),
+        auctionID: '62bca256b06736500abe1cc8',
         bidderID: '61a9e5499fcb7bfeae137b84'
     })
 
@@ -64,6 +64,8 @@
     socketIO.on('bid-error', data => console.log(data))
 
     socketIO.on('bid-success', data => console.log(data))
+
+    socketIO.on('bidder-success', data => console.log(data))
 
     socketIO.on('error', data => console.log(data))
 

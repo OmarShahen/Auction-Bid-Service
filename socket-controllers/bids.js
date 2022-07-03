@@ -81,7 +81,7 @@ module.exports = io => {
                     })
                 }
 
-                socket.join(`${auction._id}`)
+                socket.join(`${data.auctionID}`)
 
                 return socket.emit('join-auction-success', {
                     accepted: true,
@@ -118,6 +118,14 @@ module.exports = io => {
                         return socket.emit('bid-error', {
                             accepted: false,
                             message: 'bidding value is required',
+                            service: config.SERVICE
+                        })
+                    }
+
+                    if(!Number.isInteger(data.value)) {
+                        return socket.emit('bid-error', {
+                            accepted: false,
+                            message: 'bidding value is not a valid number',
                             service: config.SERVICE
                         })
                     }
@@ -178,15 +186,23 @@ module.exports = io => {
                                 service: config.SERVICE
                             })
                         }
-                    }    
+                    }
                     
                 if(data.value < auction.startingPrice) {
                     return socket.emit('bid-error', {
                         accepted: false,
-                        message: 'bidding value is lessthan the starting price',
+                        message: `bidding value is lessthan the starting price ${auction.startingPrice}` ,
                         service: config.SERVICE
                     })
                 }
+
+                if(data.value < auction.currentPrice) {
+                    return socket.emit('bid-error', {
+                        accepted: false,
+                        message: `bidding value is lessthan the current price ${auction.currentPrice}` ,
+                        service: config.SERVICE
+                    })
+                }   
 
                 const bids = await bidModel
                 .find({ auctionID: auction._id })
@@ -200,7 +216,7 @@ module.exports = io => {
                     if(minBidValue > data.value) {
                         return socket.emit('bid-error', {
                             accepted: false,
-                            message: `bidding value must be greater than ${minBidValue}`,
+                            message: `bidding value must be greater than or equal to ${minBidValue}`,
                             service: config.SERVICE
                         })
                     }
@@ -218,13 +234,28 @@ module.exports = io => {
                     value: data.value
                 }
 
+                try {
+
+                    const updateCurrentPrice = await auctionRequest
+                    .put(`/auctions/${data.auctionID}/current-price`, { bidValue: data.value })
+
+                } catch(error) {
+                    console.error(error)
+                }
+
                 newBid = new bidModel(newBidData)
                 const saveBid = await newBid.save()
 
-                return socket.to(`${data.auctionID}`).emit('bid-success', {
+                socket.to(`${data.auctionID}`).emit('bid-success', {
                     accepted: true,
                     message: `${data.bidderID} made a bid with ${data.value}`,
                     bid: saveBid,
+                })
+
+                return socket.emit('bidder-success', {
+                    accepted: true,
+                    message: 'your bid value is submitted successfully',
+                    bid: savedBid
                 })
 
                 } catch(error) {
