@@ -35,6 +35,8 @@ module.exports = io => {
 
                     } catch(error) {
 
+                        console.error(error)
+
                         if(error.response.status == 404) {
                             return socket.emit('join-auction-error', {
                                 accepted: false,
