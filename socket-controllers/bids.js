@@ -196,7 +196,7 @@ module.exports = io => {
                     })
                 }
 
-                if(data.value < auction.currentPrice) {
+                if(data.value <= auction.currentPrice) {
                     return socket.emit('bid-error', {
                         accepted: false,
                         message: `bidding value is lessthan the current price ${auction.currentPrice}` ,
