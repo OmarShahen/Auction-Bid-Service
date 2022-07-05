@@ -31,7 +31,7 @@ module.exports = io => {
 
                     try {
 
-                        response = await auctionRequest.get(`/${data.auctionID}`)
+                        response = await auctionRequest.get(`/auctions/${data.auctionID}/raw`)
 
                     } catch(error) {
 
