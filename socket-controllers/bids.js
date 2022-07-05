@@ -194,6 +194,7 @@ module.exports = io => {
 
                 const AUCTION_END_DATE = new Date(auction.auctionEndTime)
 
+
                 if(NOW_DATE > AUCTION_END_DATE) {
                     return socket.emit('bid-error', {
                         accepted: false,
