@@ -107,6 +107,8 @@ module.exports = io => {
 
                 try {
 
+                    const NOW_DATE = new Date()
+
                 
                     if(!data.auctionID || !mongoose.Types.ObjectId.isValid(data.auctionID)) {
                         return socket.emit('bid-error', {
@@ -189,6 +191,16 @@ module.exports = io => {
                             })
                         }
                     }
+
+                const AUCTION_END_DATE = new Date(auction.auctionEndTime)
+
+                if(NOW_DATE > AUCTION_END_DATE) {
+                    return socket.emit('bid-error', {
+                        accepted: false,
+                        message: `Auction is closed can't submit a bid`,
+                        service: config.SERVICE
+                    })
+                }
                     
                 if(data.value < auction.startingPrice) {
                     return socket.emit('bid-error', {
