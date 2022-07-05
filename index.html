@@ -29,7 +29,7 @@
 </body>
 
 <script>
-    const socketIO = io()
+    const socketIO = io('159.223.99.196:3004')
 
     /*socketIO.emit('join-auction', {
         auctionID: 7
@@ -44,7 +44,7 @@
     })
 
     socketIO.emit('join-auction', {
-        auctionID: '62bca256b06736500abe1cc8'
+        auctionID: '62c2e761ea8b6ee162484b23'
         })
 
     document.getElementById('bid-form').addEventListener('submit', e => {
@@ -55,8 +55,8 @@
 
         socketIO.emit('bid', {
         value: parseInt(biddingValue),
-        auctionID: '62bca256b06736500abe1cc8',
-        bidderID: '61a9e5499fcb7bfeae137b84'
+        auctionID: '62c2e761ea8b6ee162484b23',
+        bidderID: '62bb071a150569e0ad28e5a8'
     })
 
     })

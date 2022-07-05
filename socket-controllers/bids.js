@@ -168,7 +168,7 @@ module.exports = io => {
 
                     try {
 
-                        auctionResponse = await auctionRequest.get(`/${data.auctionID}`)
+                        auctionResponse = await auctionRequest.get(`/auctions/${data.auctionID}/raw`)
                         auction = auctionResponse.data.auctionListing
 
                     } catch(error) {
@@ -255,7 +255,7 @@ module.exports = io => {
                 return socket.emit('bidder-success', {
                     accepted: true,
                     message: 'your bid value is submitted successfully',
-                    bid: savedBid
+                    bid: saveBid
                 })
 
                 } catch(error) {
